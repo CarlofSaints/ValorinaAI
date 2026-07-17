@@ -1,4 +1,5 @@
 import Topbar from "@/components/Topbar";
+import KnowledgeDocuments from "@/components/KnowledgeDocuments";
 import { VALORA } from "@/lib/valora";
 
 export default function KnowledgePage() {
@@ -22,6 +23,9 @@ export default function KnowledgePage() {
           🧠 Digested from {VALORA.source}. This is the same context that feeds
           Valorina&apos;s AI — keep it current and the assistant stays on-brand.
         </div>
+
+        {/* Document upload — load Valora's own material */}
+        <KnowledgeDocuments />
 
         {/* Positioning */}
         <div className="card" style={{ padding: 24, marginBottom: 20 }}>
