@@ -22,6 +22,9 @@ export interface Lead {
   createdAt: string;
   status: "sent" | "submitted";
   submittedAt: string | null;
+  source?: "manual" | "monday";
+  mondayItemId?: string | null;
+  prefill?: Record<string, string | string[]>;
 }
 
 export interface SubmittedFile {
@@ -65,6 +68,9 @@ export async function createLead(input: {
   contactEmail: string;
   website: string;
   createdBy: string;
+  source?: "manual" | "monday";
+  mondayItemId?: string | null;
+  prefill?: Record<string, string | string[]>;
 }): Promise<Lead> {
   const id = randomUUID();
   const lead: Lead = {
@@ -77,6 +83,9 @@ export async function createLead(input: {
     createdAt: new Date().toISOString(),
     status: "sent",
     submittedAt: null,
+    source: input.source || "manual",
+    mondayItemId: input.mondayItemId || null,
+    prefill: input.prefill || {},
   };
   await putJson(`${LEADS}${id}.json`, lead);
   return lead;
@@ -84,6 +93,11 @@ export async function createLead(input: {
 
 export async function getLead(id: string): Promise<Lead | null> {
   return getJson<Lead>(`${LEADS}${id}.json`);
+}
+
+export async function getLeadByMondayItem(itemId: string): Promise<Lead | null> {
+  const leads = await listLeads();
+  return leads.find((l) => l.mondayItemId === itemId) || null;
 }
 
 export async function listLeads(): Promise<Lead[]> {

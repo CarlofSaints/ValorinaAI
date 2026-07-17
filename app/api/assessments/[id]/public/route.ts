@@ -17,5 +17,6 @@ export async function GET(
   return NextResponse.json({
     company: lead.company,
     alreadySubmitted: lead.status === "submitted",
+    prefill: lead.prefill || {},
   });
 }

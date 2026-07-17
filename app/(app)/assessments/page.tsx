@@ -15,6 +15,7 @@ interface Lead {
   createdAt: string;
   status: "sent" | "submitted";
   submittedAt: string | null;
+  source?: "manual" | "monday";
 }
 
 export default function AssessmentsPage() {
@@ -215,7 +216,12 @@ export default function AssessmentsPage() {
                 leads.map((l) => (
                   <tr key={l.id}>
                     <td>
-                      <div className="user-name">{l.company}</div>
+                      <div className="user-name" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        {l.company}
+                        {l.source === "monday" && (
+                          <span className="badge badge-gold" style={{ fontSize: 10 }}>Monday.com</span>
+                        )}
+                      </div>
                       {l.website && <div className="user-email">{l.website}</div>}
                     </td>
                     <td style={{ fontSize: 13 }}>

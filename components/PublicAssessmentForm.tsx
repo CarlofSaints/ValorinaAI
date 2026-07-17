@@ -22,7 +22,11 @@ export default function PublicAssessmentForm({ token }: { token: string }) {
         if (!res.ok) return setState("invalid");
         setCompany(json.company || "");
         if (json.alreadySubmitted) return setState("already");
-        setAnswers((a) => ({ ...a, company_name: json.company || "" }));
+        setAnswers((a) => ({
+          ...a,
+          company_name: json.company || "",
+          ...(json.prefill || {}),
+        }));
         setState("ready");
       } catch {
         setState("invalid");
