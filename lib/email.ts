@@ -9,10 +9,14 @@ function resendClient() {
 // From a verified domain (outerjoin.co.za). Overridable via env.
 const FROM = process.env.EMAIL_FROM || "Valorian <valorian@outerjoin.co.za>";
 
-// SAFETY GATE: while set, every outbound email is redirected here instead of
-// the real recipient. Prevents test sends reaching real Valora inboxes.
-// Unset EMAIL_TEST_RECIPIENT in the environment to go live.
-const TEST_RECIPIENT = process.env.EMAIL_TEST_RECIPIENT;
+// SAFETY GATE (fail-safe): every outbound email is redirected to a test inbox
+// UNLESS EMAIL_GO_LIVE === "true". So the default state — including a missing or
+// empty EMAIL_TEST_RECIPIENT — still cannot email real recipients. To actually
+// go live you must deliberately set EMAIL_GO_LIVE=true.
+const GO_LIVE = process.env.EMAIL_GO_LIVE === "true";
+const TEST_RECIPIENT = GO_LIVE
+  ? process.env.EMAIL_TEST_RECIPIENT || null // live: only gated if a test inbox is still set
+  : process.env.EMAIL_TEST_RECIPIENT || "carl@outerjoin.co.za"; // not live: always gated
 
 const BRAND = {
   navy: "#0a1a2f",
