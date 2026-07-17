@@ -22,7 +22,9 @@ export interface Idea {
   attachments: Attachment[];
 }
 
-const KEY = "valorina.ideas.v1";
+// Bump this version to invalidate stale locally-saved ideas (e.g. old demo
+// owners) so the fresh seed loads. v2: real Valora roster + Jira idea.
+const KEY = "valorina.ideas.v2";
 
 const AVATAR_COLORS = [
   "#0f2542",
