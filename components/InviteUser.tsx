@@ -47,7 +47,7 @@ export default function InviteUser() {
         >
           <h3 style={{ fontSize: 15, marginBottom: 3 }}>Invite a user</h3>
           <div style={{ fontSize: 12, color: "var(--ink-faint)", marginBottom: 14 }}>
-            They&apos;ll receive a Valorina welcome email.
+            They&apos;ll receive a Valorian welcome email.
           </div>
           <form onSubmit={onSubmit}>
             <div className="field">

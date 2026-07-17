@@ -1,5 +1,5 @@
 // Digested from valoraadvisory.co.za (home, /services, /about, /approach,
-// /ai-automation). This is the grounding profile for Valorina — the same
+// /ai-automation). This is the grounding profile for Valorian — the same
 // source that will later feed the AI's context/RAG. Keep it factual to their
 // site so the tool speaks in Valora's own language.
 
@@ -61,7 +61,7 @@ export const VALORA = {
     },
   ],
 
-  // Valora's own published AI-agent catalogue — the shape Valorina can grow into.
+  // Valora's own published AI-agent catalogue — the shape Valorian can grow into.
   agentCatalogue: [
     { name: "AI Receptionist", text: "Lead capture and meeting booking." },
     { name: "Sales AI Agent", text: "Lead qualification and proposal generation." },
@@ -88,17 +88,17 @@ export const VALORA = {
     { value: "10+", label: "Industries served" },
   ],
 
-  // Systems Valorina must integrate with (their CRMs / systems of record).
+  // Systems Valorian must integrate with (their CRMs / systems of record).
   integrations: [
     {
       name: "Jira",
       role: "CRM / system of record",
-      text: "Valorina integrates via the Jira API and lives in Jira as its own user — reading and creating issues, commenting, and syncing ideas/tickets both ways.",
+      text: "Valorian integrates via the Jira API and lives in Jira as its own user — reading and creating issues, commenting, and syncing ideas/tickets both ways.",
     },
     {
       name: "Monday.com",
       role: "CRM / work management",
-      text: "Two-way sync with Monday.com boards via API — items, updates and status mapped to Valorina ideas/tickets so both stay in step.",
+      text: "Two-way sync with Monday.com boards via API — items, updates and status mapped to Valorian ideas/tickets so both stay in step.",
     },
   ],
 

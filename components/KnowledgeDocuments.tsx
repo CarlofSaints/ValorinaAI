@@ -146,7 +146,7 @@ export default function KnowledgeDocuments() {
           <h3 style={{ fontSize: 15 }}>Valora documents</h3>
           <div style={{ fontSize: 12, color: "var(--ink-faint)", marginTop: 2 }}>
             Load Valora&apos;s templates, proposals, case studies and methodology —
-            the source material Valorina will digest. Stored privately.
+            the source material Valorian will digest. Stored privately.
           </div>
         </div>
         <span className="badge badge-navy">{docs.length} file{docs.length === 1 ? "" : "s"}</span>
@@ -261,7 +261,7 @@ export default function KnowledgeDocuments() {
       </div>
 
       <div style={{ marginTop: 14, fontSize: 11, color: "var(--ink-faint)", borderTop: "1px solid var(--border)", paddingTop: 12 }}>
-        Phase 1: files are stored privately in Vercel Blob. Next: Valorina extracts
+        Phase 1: files are stored privately in Vercel Blob. Next: Valorian extracts
         text and embeds these so it can answer grounded in Valora&apos;s own material
         (uploader &amp; tags become shared once the database lands).
       </div>

@@ -28,7 +28,7 @@ export default function UsersPage() {
           <div>
             <h2>Users</h2>
             <p>
-              Everyone with access to the Valorina workspace. Invite colleagues,
+              Everyone with access to the Valorian workspace. Invite colleagues,
               assign a role, and control what each person can see and do.
             </p>
           </div>

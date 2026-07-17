@@ -1,9 +1,13 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy: constructing Resend throws when the key is absent (e.g. at build time,
+// where the Sensitive key isn't present). Only build it when actually sending.
+function resendClient() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 // From a verified domain (outerjoin.co.za). Overridable via env.
-const FROM = process.env.EMAIL_FROM || "Valorina <valorina@outerjoin.co.za>";
+const FROM = process.env.EMAIL_FROM || "Valorian <valorian@outerjoin.co.za>";
 
 // SAFETY GATE: while set, every outbound email is redirected here instead of
 // the real recipient. Prevents test sends reaching real Valora inboxes.
@@ -28,7 +32,7 @@ function shell(title: string, bodyHtml: string, gatedNote?: string) {
   return `<!doctype html><html><body style="margin:0;background:#f5f6f8;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#16233a;">
   <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e4e7ec;border-radius:12px;overflow:hidden;">
     <div style="background:${BRAND.navy};padding:22px 28px;">
-      <div style="font-size:20px;font-weight:700;letter-spacing:0.14em;color:#fff;">VALOR<span style="color:${BRAND.gold};">INA</span></div>
+      <div style="font-size:20px;font-weight:700;letter-spacing:0.14em;color:#fff;">VALOR<span style="color:${BRAND.gold};">IAN</span></div>
       <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:${BRAND.gold};margin-top:3px;">AI Business Analyst</div>
     </div>
     <div style="padding:28px;">
@@ -41,7 +45,7 @@ function shell(title: string, bodyHtml: string, gatedNote?: string) {
         : ""
     }
     <div style="padding:16px 28px;background:#fafbfc;border-top:1px solid #e4e7ec;font-size:11px;color:#8a97a9;">
-      Valora Advisory · Turning Insight into Impact · sent by Valorina
+      Valora Advisory · Turning Insight into Impact · sent by Valorian
     </div>
   </div>
   </body></html>`;
@@ -60,7 +64,7 @@ async function deliver(
   const finalSubject = redirected ? `[TEST → ${intended}] ${subject}` : subject;
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await resendClient().emails.send({
       from: FROM,
       to,
       subject: finalSubject,
@@ -87,12 +91,12 @@ export function sendUserInviteEmail(params: {
   role: string;
 }): Promise<SendResult> {
   const { name, email, role } = params;
-  const subject = `You've been added to the Valorina workspace`;
+  const subject = `You've been added to the Valorian workspace`;
   return deliver(email, subject, (gatedNote) =>
     shell(
-      `Welcome to Valorina${name ? `, ${name.split(" ")[0]}` : ""}`,
+      `Welcome to Valorian${name ? `, ${name.split(" ")[0]}` : ""}`,
       `<p style="font-size:14px;line-height:1.6;color:#4a5a72;">
-         You've been added to Valora Advisory's <strong>Valorina</strong> AI Business Analyst workspace.
+         You've been added to Valora Advisory's <strong>Valorian</strong> AI Business Analyst workspace.
        </p>
        <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;">
          <tr><td style="padding:8px 0;color:#8a97a9;width:90px;">Name</td><td style="padding:8px 0;font-weight:600;">${name || "—"}</td></tr>
@@ -100,6 +104,33 @@ export function sendUserInviteEmail(params: {
          <tr><td style="padding:8px 0;color:#8a97a9;">Role</td><td style="padding:8px 0;font-weight:600;">${role}</td></tr>
        </table>
        <a href="https://valorina-ai.vercel.app" style="display:inline-block;background:${BRAND.gold};color:${BRAND.navy};font-weight:700;font-size:13px;text-decoration:none;padding:11px 20px;border-radius:9px;">Open the workspace →</a>`,
+      gatedNote
+    )
+  );
+}
+
+export function sendAssessmentInviteEmail(params: {
+  to: string;
+  company: string;
+  contactName: string;
+  link: string;
+}): Promise<SendResult> {
+  const { to, company, contactName, link } = params;
+  const subject = `Valora Advisory — Operational & ESG Pre-Kickoff Assessment`;
+  return deliver(to, subject, (gatedNote) =>
+    shell(
+      `Your pre-kickoff assessment${contactName ? `, ${contactName.split(" ")[0]}` : ""}`,
+      `<p style="font-size:14px;line-height:1.6;color:#4a5a72;">
+         Ahead of ${company ? `<strong>${company}</strong>'s` : "your"} Discovery Workshop with Valora Advisory,
+         please complete our short Operational &amp; ESG Pre-Kickoff Assessment. It captures the
+         baseline we need so the workshop starts with the groundwork already done.
+       </p>
+       <p style="font-size:13px;line-height:1.6;color:#4a5a72;">
+         It takes about 10 minutes. You can upload supporting documents directly in the form.
+         All data is handled securely under our NDA.
+       </p>
+       <a href="${link}" style="display:inline-block;background:${BRAND.gold};color:${BRAND.navy};font-weight:700;font-size:14px;text-decoration:none;padding:12px 24px;border-radius:9px;margin:6px 0;">Start the assessment →</a>
+       <p style="font-size:12px;color:#8a97a9;margin-top:14px;">Or paste this link into your browser:<br/>${link}</p>`,
       gatedNote
     )
   );

@@ -173,7 +173,7 @@ export default function IdeaCanvasPage() {
             <p>
               Capture every idea, feature request and client insight in one
               place — with an owner, priority, custom tags and supporting files.
-              This becomes the raw material Valorina turns into diagnostics and
+              This becomes the raw material Valorian turns into diagnostics and
               proposals.
             </p>
           </div>

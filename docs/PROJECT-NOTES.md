@@ -1,9 +1,9 @@
-# Valorina AI — Project Notes
+# Valorian AI — Project Notes
 
 **Client:** Valora Advisory (valoraadvisory.co.za)
 **Contact:** Jerome Sagathevan — CEO / Founder — jerome@valoraadvisory.co.za — 081 463 7342
 **Our side:** OuterJoin (Carl Dos Santos)
-**Product working name:** **Valorina** — the AI Business Analyst, given a name to bring it to life.
+**Product working name:** **Valorian** — the AI Business Analyst, given a name to bring it to life.
 **Repo:** https://github.com/CarlofSaints/ValorinaAI
 **Status:** Rebuilding project context after laptop theft (Jul 2026) wiped prior chats. This repo is now the single source of truth for notes + code.
 
@@ -40,15 +40,15 @@ Build an **internal AI Business Analyst** — a semi-custom AI workspace that su
 - Rationale given to client: scope spans 8 broad areas; the scoping session turns that into a concrete, costed, sign-off-able plan **that Valora owns outright** — usable even if they don't proceed with us (they'd have a proper spec doc for other providers).
 - **Only firm figure = the Discovery fee.** Build + support costs are indicative ranges until scoped.
 - Positioning: "the AI is the engine, your knowledge is what makes it valuable" — IP stays with Valora.
-- P.S. in the email proposed naming the BA **"Valorina"**.
+- P.S. in the email proposed naming the BA **"Valorian"**.
 - Proposal PDF (local): `eXceler8\OuterJoin - Clients\LEADS\VALORA\Valora-AI-Business-Analyst-Proposal - OUTERJOIN.pdf`
 
 ## 5. Remembered from meeting(s) with client
 
 - **Meeting Agent:** they want an agent that can **sit in and listen to meetings and respond to questions when asked.** (Captured as a flagship idea on the Idea Canvas.)
-- **CRMs = Jira AND Monday.com.** Valorina must integrate with both via API and (for Jira) **live inside Jira as its own user** — reading/creating issues, commenting, syncing ideas/tickets both ways. Treat them as systems of record; keep the two in step. (Both captured as high-priority ideas on the Idea Canvas + roadmap items in the sidebar.)
-  - _Jira scope: Jira Cloud REST API + OAuth/app; a dedicated Jira account (or Atlassian Connect/Forge app) for the agent; field mapping Valorina ideas ↔ Jira issue types; webhooks for two-way sync._
-  - _Monday.com scope: Monday API (GraphQL) + API token/OAuth; map boards/items/columns to Valorina ideas/tickets; webhooks for two-way sync._
+- **CRMs = Jira AND Monday.com.** Valorian must integrate with both via API and (for Jira) **live inside Jira as its own user** — reading/creating issues, commenting, syncing ideas/tickets both ways. Treat them as systems of record; keep the two in step. (Both captured as high-priority ideas on the Idea Canvas + roadmap items in the sidebar.)
+  - _Jira scope: Jira Cloud REST API + OAuth/app; a dedicated Jira account (or Atlassian Connect/Forge app) for the agent; field mapping Valorian ideas ↔ Jira issue types; webhooks for two-way sync._
+  - _Monday.com scope: Monday API (GraphQL) + API token/OAuth; map boards/items/columns to Valorian ideas/tickets; webhooks for two-way sync._
 - _[TODO: other requests discussed that Carl couldn't fully recall — confirm with Jerome and log here.]_
 
 ## 5a. Valora company profile (digested from valoraadvisory.co.za)
@@ -58,9 +58,33 @@ Stored in the app under **Knowledge Base** (`/knowledge`, `lib/valora.ts`) — t
 - **Positioning:** "a consulting and implementation firm — built to close the gap between strategy and execution." Most firms hand over a strategy and leave; Valora pairs senior advisory with hands-on delivery. Taglines: _"Turning Insight into Impact"_ / _"Turning Operational Challenges Into Measurable Business Value."_
 - **The cycle (their approach):** Diagnose → Design → Implement → Measure — "a disciplined cycle, executed in the open." (Aligns tightly with the brief's diagnostic/report focus.)
 - **Service lines (7):** Business Process Optimization; Workflow Automation & Optimization; Systems Integration & Implementation; Data Analytics & Reporting; Cost Optimization Strategies; Carbon Footprint & ESG Reporting Support; AI Integration & Automation (every client gets a bespoke "AI Roadmap").
-- **They already sell AI agents** — published catalogue: AI Receptionist, Sales AI, Finance AI, HR AI, Operations AI, Knowledge AI, Document AI, Executive AI. **Valorina should be positioned as their internal instance of exactly this** — strong alignment.
+- **They already sell AI agents** — published catalogue: AI Receptionist, Sales AI, Finance AI, HR AI, Operations AI, Knowledge AI, Document AI, Executive AI. **Valorian should be positioned as their internal instance of exactly this** — strong alignment.
 - **Proof points they cite:** 40%+ avg process improvement · 30% avg cost reduction · 24/7 agents · 10+ industries · ~1,000 AI engineers in their network. Sector-agnostic (mining, manufacturing, retail, financial services mentioned).
 - **Tone:** professional yet accessible; confident, pragmatic, outcomes-focused; "outcomes on the P&L, not on a pilot dashboard."
+
+## 5b. Client's detailed capability spec — "Main Tasks the AI Business Analyst Can Perform" (received from client, 17 Jul 2026)
+
+Verbatim-faithful capture of what the client wants Valorian to do. This supersedes the vaguer memory of "other asks" — treat as the authoritative task list.
+
+> 🎯 **CURRENT FOCUS (per Carl, 17 Jul): A and E.** Build depth on **A. Client Diagnostic Preparation** and **E. Proposal & Pitch Support** first; B/C/D/F/G/H come later. The Assessments intake feature already feeds A (structured client data in); the AI diagnostic-prep + proposal-draft generation (needs Anthropic key + the lead's website/online info) is the priority next build.
+
+**A. Client Diagnostic Preparation** — review client materials (company profiles, reports, SOPs, policies, spreadsheets, process descriptions, meeting notes, previous presentations) and prepare: client background summaries; key business issues; possible operational pain points; suggested diagnostic questions; department-specific interview guides; initial risk areas; possible improvement themes. → Prepare faster before meeting a client / running a diagnostic.
+
+**B. Process Review & Bottleneck Identification** — review "as-is" processes and flag: duplicated steps; manual workflows; unclear approval chains; reporting delays; weak accountability points; repeated data entry; possible control gaps; slow handovers between departments; potential cost leakage. Especially in procurement, finance, HR, operations, maintenance, inventory, reporting, project management.
+
+**C. Diagnostic Question Generation** — structured diagnostic questions per client/department. E.g. Procurement: supplier onboarding, approval processes, PO tracking, payment terms, stock availability, cost visibility, supplier performance, procurement cycle time. Reporting: KPI ownership, reporting frequency, data sources, dashboard availability, Excel dependency, manual report prep, report accuracy, management decision-making. Supports both sales and analyst teams.
+
+**D. Report Drafting** — first drafts of: diagnostic reports; bottleneck maps; quick-win recommendations; improvement roadmaps; implementation plans; client summaries; monthly performance reports; internal briefing notes. Humans review/refine; saves significant time.
+
+**E. Proposal & Pitch Support** — draft: client-specific proposals; pilot implementation scopes; pricing explanations; meeting follow-up emails; executive summaries; sector-specific talking points; client presentation outlines. Important for the salesperson to respond quickly and professionally.
+
+**F. KPI & Dashboard Recommendations** — suggest KPIs + dashboard structures from the client's problem. Procurement: procurement cycle time, pending approvals, supplier lead time, overdue deliveries, top suppliers by spend, emergency purchases, PO status. Inventory: stock availability, slow-moving items, stockouts, reorder levels, safety stock, consumption trends. Maintenance: downtime, maintenance turnaround time, open work orders, recurring failures, spare parts availability. Finance: cost trends, overdue payments, budget variance, cash-flow pressure points. → Prepare dashboard concepts before involving technical delivery.
+
+**G. Salesperson Support** — support the Business Development & Solutions Consultant to prep for meetings: industry-specific client questions; objection-handling responses; follow-up emails; CRM notes; meeting summaries; client qualification notes; draft proposals; commercial next-step recommendations. NB the client explicitly wants the salesperson to be "more than a normal salesperson" — understand client problems and position Valora's solutions intelligently.
+
+**H. Knowledge Base for Valora** — over time become the internal knowledge base for Valora's methodology: diagnostic templates; proposal templates; sector-specific pain points; pricing guidance; objection-handling language; client meeting questions; sample deliverables; case study formats; dashboard examples; improvement roadmap templates. → Standardize delivery, avoid reinventing the wheel per client.
+
+_These map cleanly onto the build so far: the Idea Canvas (capture), the Assessments/intake feature (A + C — client diagnostic gathering), and the Knowledge Base (H). D/E/F/G are the AI-generation surfaces to build once an Anthropic key + RAG are in._
 
 ## 6. Open questions for next session
 

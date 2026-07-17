@@ -13,6 +13,17 @@ const nav = [
     ),
   },
   {
+    href: "/assessments",
+    label: "Assessments",
+    icon: (
+      <>
+        <path d="M8 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2" />
+        <rect x="8" y="2" width="8" height="4" rx="1" />
+        <path d="M9 12l2 2 4-4" />
+      </>
+    ),
+  },
+  {
     href: "/users",
     label: "Users",
     icon: (
@@ -84,7 +95,7 @@ export default function Sidebar() {
           priority
         />
         <div className="brand-name">
-          VALOR<span>INA</span>
+          VALOR<span>IAN</span>
         </div>
         <div className="brand-tag">AI Business Analyst</div>
       </div>

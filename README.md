@@ -1,4 +1,4 @@
-# Valorina AI
+# Valorian AI
 
 Internal **AI Business Analyst** workspace for **Valora Advisory** — built by OuterJoin.
 

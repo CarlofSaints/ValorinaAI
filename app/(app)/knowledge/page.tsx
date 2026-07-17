@@ -12,7 +12,7 @@ export default function KnowledgePage() {
             <h2>Knowledge Base</h2>
             <p>
               Valora Advisory&apos;s profile, methodology and service lines — the
-              grounding context Valorina draws on to sound like Valora, run
+              grounding context Valorian draws on to sound like Valora, run
               diagnostics its way, and stay aligned to how the firm actually
               works.
             </p>
@@ -21,7 +21,7 @@ export default function KnowledgePage() {
 
         <div className="notice">
           🧠 Digested from {VALORA.source}. This is the same context that feeds
-          Valorina&apos;s AI — keep it current and the assistant stays on-brand.
+          Valorian&apos;s AI — keep it current and the assistant stays on-brand.
         </div>
 
         {/* Document upload — load Valora's own material */}
@@ -114,7 +114,7 @@ export default function KnowledgePage() {
         <SectionTitle>
           AI agent catalogue{" "}
           <span style={{ fontWeight: 400, color: "var(--ink-faint)", fontSize: 13 }}>
-            — Valora&apos;s own published agents; the shape Valorina grows into
+            — Valora&apos;s own published agents; the shape Valorian grows into
           </span>
         </SectionTitle>
         <div

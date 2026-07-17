@@ -97,8 +97,8 @@ function mk(
 export function seed(): Idea[] {
   return [
     mk(
-      "Jira integration — Valorina lives in Jira as a user",
-      "Connect Valorina to Valora's Jira (their CRM) via API so the agent exists as its own Jira user — reading and creating issues, commenting, and syncing ideas/tickets both ways. Jira is the system of record; Valorina works inside it.",
+      "Jira integration — Valorian lives in Jira as a user",
+      "Connect Valorian to Valora's Jira (their CRM) via API so the agent exists as its own Jira user — reading and creating issues, commenting, and syncing ideas/tickets both ways. Jira is the system of record; Valorian works inside it.",
       "Jerome Sagathevan",
       "high",
       ["jira", "integration", "crm", "flagship"],
@@ -106,7 +106,7 @@ export function seed(): Idea[] {
     ),
     mk(
       "Monday.com integration — two-way board sync",
-      "Connect Valorina to Valora's Monday.com (also used as a CRM) via API — sync items, updates and status both ways so ideas/tickets stay aligned across Monday and Jira.",
+      "Connect Valorian to Valora's Monday.com (also used as a CRM) via API — sync items, updates and status both ways so ideas/tickets stay aligned across Monday and Jira.",
       "Kerrelisa",
       "high",
       ["monday", "integration", "crm"],
