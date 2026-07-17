@@ -1,4 +1,8 @@
 import Topbar from "@/components/Topbar";
+import { TEAM } from "@/lib/team";
+
+const memberCount = (roleName: string) =>
+  TEAM.filter((m) => m.role === roleName).length;
 
 const perms = [
   "View Idea Canvas",
@@ -15,35 +19,35 @@ const roles = [
     name: "Administrator",
     color: "var(--gold)",
     desc: "Full control of the workspace, users, roles and billing.",
-    members: 1,
+    members: memberCount("Administrator"),
     grants: [true, true, true, true, true, true, true],
   },
   {
     name: "Consultant",
     color: "#0f2542",
     desc: "Delivery team — runs diagnostics and drafts client-facing work.",
-    members: 2,
+    members: memberCount("Consultant"),
     grants: [true, true, true, true, true, false, false],
   },
   {
     name: "Sales",
     color: "#b45309",
     desc: "Pitch support — proposals, follow-ups and meeting prep.",
-    members: 1,
+    members: memberCount("Sales"),
     grants: [true, true, false, true, false, false, false],
   },
   {
     name: "Analyst",
     color: "#7c3aed",
     desc: "Supports diagnostics and idea capture, no external drafts.",
-    members: 1,
+    members: memberCount("Analyst"),
     grants: [true, true, true, false, false, false, false],
   },
   {
     name: "Client (Read-only)",
     color: "#64748b",
     desc: "Guest access to shared boards and approved deliverables only.",
-    members: 1,
+    members: memberCount("Client (Read-only)"),
     grants: [true, false, false, false, false, false, false],
   },
 ];

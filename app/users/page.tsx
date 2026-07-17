@@ -1,15 +1,25 @@
 import Topbar from "@/components/Topbar";
+import InviteUser from "@/components/InviteUser";
+import { TEAM } from "@/lib/team";
 
-const users = [
-  { name: "Jerome Sagathevan", email: "jerome@valoraadvisory.co.za", role: "Administrator", roleClass: "badge-gold", status: "Active", last: "Online now", color: "#0f2542", initials: "JS" },
-  { name: "Priya Naidoo", email: "priya@valoraadvisory.co.za", role: "Consultant", roleClass: "badge-navy", status: "Active", last: "12 min ago", color: "#8a6d1f", initials: "PN" },
-  { name: "Thabo Molefe", email: "thabo@valoraadvisory.co.za", role: "Consultant", roleClass: "badge-navy", status: "Active", last: "1 hr ago", color: "#157f3b", initials: "TM" },
-  { name: "Amina Patel", email: "amina@valoraadvisory.co.za", role: "Sales", roleClass: "badge-navy", status: "Active", last: "Yesterday", color: "#b45309", initials: "AP" },
-  { name: "Sipho Dlamini", email: "sipho@valoraadvisory.co.za", role: "Analyst", roleClass: "badge-navy", status: "Active", last: "2 days ago", color: "#7c3aed", initials: "SD" },
-  { name: "Client — Acme Retail", email: "ops@acmeretail.co.za", role: "Client (Read-only)", roleClass: "badge-gray", status: "Invited", last: "Pending", color: "#64748b", initials: "AR" },
-];
+const roleClass: Record<string, string> = {
+  Administrator: "badge-gold",
+  Consultant: "badge-navy",
+  Sales: "badge-navy",
+  Analyst: "badge-navy",
+  "Client (Read-only)": "badge-gray",
+};
+
+const lastActive: Record<string, string> = {
+  "jerome@valoraadvisory.co.za": "Online now",
+  "kerrelisa@valoraadvisory.co.za": "12 min ago",
+  "omar@valoraadvisory.co.za": "1 hr ago",
+  "jihane@valoraadvisory.co.za": "Yesterday",
+};
 
 export default function UsersPage() {
+  const rolesInUse = new Set(TEAM.map((u) => u.role)).size;
+
   return (
     <>
       <Topbar title="Users" crumb="Workspace / Users" />
@@ -22,28 +32,28 @@ export default function UsersPage() {
               assign a role, and control what each person can see and do.
             </p>
           </div>
-          <button className="btn btn-gold">+ Invite user</button>
+          <InviteUser />
         </div>
 
         <div className="stat-row">
           <div className="stat">
             <div className="label">Total users</div>
-            <div className="value">6</div>
-            <div className="delta">5 internal · 1 client</div>
+            <div className="value">{TEAM.length}</div>
+            <div className="delta">Valora Advisory team</div>
           </div>
           <div className="stat">
             <div className="label">Active</div>
-            <div className="value">5</div>
-            <div className="delta">1 pending invite</div>
+            <div className="value">{TEAM.length}</div>
+            <div className="delta">All accounts enabled</div>
           </div>
           <div className="stat">
             <div className="label">Roles in use</div>
-            <div className="value">5</div>
+            <div className="value">{rolesInUse}</div>
             <div className="delta">Admin, Consultant, Sales…</div>
           </div>
           <div className="stat">
             <div className="label">Seats available</div>
-            <div className="value">14</div>
+            <div className="value">{20 - TEAM.length}</div>
             <div className="delta">of 20 on current plan</div>
           </div>
         </div>
@@ -60,7 +70,7 @@ export default function UsersPage() {
               </tr>
             </thead>
             <tbody>
-              {users.map((u) => (
+              {TEAM.map((u) => (
                 <tr key={u.email}>
                   <td>
                     <div className="user-cell">
@@ -74,14 +84,16 @@ export default function UsersPage() {
                     </div>
                   </td>
                   <td>
-                    <span className={`badge ${u.roleClass}`}>{u.role}</span>
+                    <span className={`badge ${roleClass[u.role] || "badge-navy"}`}>{u.role}</span>
                   </td>
                   <td>
-                    <span className={`badge ${u.status === "Active" ? "badge-green" : "badge-gray"}`}>
-                      <span className="dot" /> {u.status}
+                    <span className="badge badge-green">
+                      <span className="dot" /> Active
                     </span>
                   </td>
-                  <td style={{ color: "var(--ink-soft)", fontSize: 13 }}>{u.last}</td>
+                  <td style={{ color: "var(--ink-soft)", fontSize: 13 }}>
+                    {lastActive[u.email] || "—"}
+                  </td>
                   <td style={{ textAlign: "right" }}>
                     <button className="btn btn-ghost" style={{ padding: "6px 12px" }}>
                       Manage

@@ -45,8 +45,10 @@ Build an **internal AI Business Analyst** — a semi-custom AI workspace that su
 
 ## 5. Remembered from meeting(s) with client
 
-- **Meeting Agent:** they want an agent that can **sit in and listen to meetings and respond to questions when asked.** (Captured as the flagship idea on the Idea Canvas.)
-- _[TODO: several other requests discussed that Carl couldn't fully recall — confirm with Jerome and log here.]_
+- **Meeting Agent:** they want an agent that can **sit in and listen to meetings and respond to questions when asked.** (Captured as a flagship idea on the Idea Canvas.)
+- **Jira is their CRM.** Valorina must **integrate with Jira via API and live inside Jira as its own user** — reading/creating issues, commenting, and syncing ideas/tickets both ways. Jira is the system of record. (Captured as a high-priority idea on the Idea Canvas.)
+  - _Implications to scope: Jira Cloud REST API + OAuth/app; a dedicated Jira account (or Atlassian Connect/Forge app) for the agent; field mapping between Valorina ideas and Jira issue types; webhooks for two-way sync._
+- _[TODO: other requests discussed that Carl couldn't fully recall — confirm with Jerome and log here.]_
 
 ## 6. Open questions for next session
 

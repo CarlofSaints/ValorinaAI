@@ -41,6 +41,15 @@ const future = [
     icon: <path d="M12 15a4 4 0 0 0 4-4V6a4 4 0 1 0-8 0v5a4 4 0 0 0 4 4zM5 11a7 7 0 0 0 14 0M12 18v3" />,
   },
   {
+    label: "Jira Sync",
+    icon: (
+      <>
+        <path d="M4 12h10M4 7h13M4 17h7" />
+        <circle cx="18.5" cy="16.5" r="2.6" />
+      </>
+    ),
+  },
+  {
     label: "Client Diagnostics",
     icon: <path d="M4 5h16M4 12h16M4 19h10" />,
   },

@@ -95,6 +95,14 @@ function mk(
 export function seed(): Idea[] {
   return [
     mk(
+      "Jira integration — Valorina lives in Jira as a user",
+      "Connect Valorina to Valora's Jira (their CRM) via API so the agent exists as its own Jira user — reading and creating issues, commenting, and syncing ideas/tickets both ways. Jira is the system of record; Valorina works inside it.",
+      "Jerome Sagathevan",
+      "high",
+      ["jira", "integration", "crm", "flagship"],
+      0
+    ),
+    mk(
       "Meeting Agent that listens & answers live",
       "An AI participant that sits in on client meetings, transcribes in real time and answers questions when asked — turning conversation directly into diagnostic notes and follow-up actions.",
       "Jerome Sagathevan",
@@ -105,7 +113,7 @@ export function seed(): Idea[] {
     mk(
       "One-click client diagnostic pack",
       "Upload a client's documents and generate a background summary, pain-point map and a tailored diagnostic questionnaire in minutes.",
-      "Priya Naidoo",
+      "Kerrelisa",
       "high",
       ["diagnostics", "automation"],
       2
@@ -113,7 +121,7 @@ export function seed(): Idea[] {
     mk(
       "Proposal draft generator (Valora templates)",
       "First-draft proposals, pricing explanations and follow-up emails built on Valora's own templates and methodology — IP stays ours.",
-      "Amina Patel",
+      "Omar",
       "med",
       ["proposals", "sales"],
       3
@@ -121,7 +129,7 @@ export function seed(): Idea[] {
     mk(
       "Sector pain-point knowledge base",
       "A searchable library of sector-specific pain points, case studies and quick-win recommendations to speed up every engagement.",
-      "Thabo Molefe",
+      "Jihane",
       "low",
       ["knowledge-base", "research"],
       5

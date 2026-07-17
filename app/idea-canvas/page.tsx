@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Topbar from "@/components/Topbar";
+import { notifyIdeaCreatedAction } from "@/app/actions";
 import {
   Attachment,
   Idea,
@@ -11,14 +12,9 @@ import {
   loadIdeas,
   saveIdeas,
 } from "@/lib/ideas";
+import { TEAM_NAMES } from "@/lib/team";
 
-const TEAM = [
-  "Jerome Sagathevan",
-  "Priya Naidoo",
-  "Thabo Molefe",
-  "Amina Patel",
-  "Sipho Dlamini",
-];
+const TEAM = TEAM_NAMES;
 
 const PRIO_LABEL: Record<Priority, string> = {
   high: "High",
@@ -48,6 +44,10 @@ export default function IdeaCanvasPage() {
   // board filter
   const [filter, setFilter] = useState<"all" | Priority>("all");
   const [search, setSearch] = useState("");
+
+  // submit status
+  const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     setIdeas(loadIdeas());
@@ -95,7 +95,7 @@ export default function IdeaCanvasPage() {
     setDate(new Date().toISOString().slice(0, 10));
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) return;
     const idea: Idea = {
@@ -112,6 +112,25 @@ export default function IdeaCanvasPage() {
       attachments,
     };
     setIdeas([idea, ...ideas]);
+
+    // Notify the assigned owner by email (gated to the test inbox until go-live).
+    setSending(true);
+    setStatus(null);
+    try {
+      const res = await notifyIdeaCreatedAction({
+        ownerName: idea.owner,
+        title: idea.title,
+        description: idea.description,
+        priority: PRIO_LABEL[idea.priority],
+        tags: idea.tags,
+      });
+      setStatus({ ok: res.ok, msg: res.message });
+    } catch {
+      setStatus({ ok: false, msg: "Idea saved, but the notification could not be sent." });
+    } finally {
+      setSending(false);
+    }
+
     resetForm();
   }
 
@@ -292,9 +311,31 @@ export default function IdeaCanvasPage() {
               )}
             </div>
 
-            <button type="submit" className="btn btn-gold" style={{ width: "100%", justifyContent: "center", marginTop: 6 }}>
-              + Add to board
+            <button
+              type="submit"
+              className="btn btn-gold"
+              disabled={sending}
+              style={{ width: "100%", justifyContent: "center", marginTop: 6, opacity: sending ? 0.7 : 1 }}
+            >
+              {sending ? "Saving…" : "+ Add to board"}
             </button>
+
+            {status && (
+              <div
+                style={{
+                  marginTop: 12,
+                  fontSize: 12,
+                  padding: "9px 12px",
+                  borderRadius: 8,
+                  background: status.ok ? "rgba(22,163,74,0.08)" : "rgba(220,38,38,0.08)",
+                  color: status.ok ? "#157f3b" : "#b91c1c",
+                  border: `1px solid ${status.ok ? "rgba(22,163,74,0.25)" : "rgba(220,38,38,0.25)"}`,
+                }}
+              >
+                {status.ok ? "✓ " : "⚠ "}
+                {status.msg}
+              </div>
+            )}
           </form>
 
           {/* ---- Board ---- */}
