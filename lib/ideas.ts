@@ -23,8 +23,8 @@ export interface Idea {
 }
 
 // Bump this version to invalidate stale locally-saved ideas (e.g. old demo
-// owners) so the fresh seed loads. v2: real Valora roster + Jira idea.
-const KEY = "valorina.ideas.v2";
+// owners) so the fresh seed loads. v3: adds Monday.com integration idea.
+const KEY = "valorina.ideas.v3";
 
 const AVATAR_COLORS = [
   "#0f2542",
@@ -102,6 +102,14 @@ export function seed(): Idea[] {
       "Jerome Sagathevan",
       "high",
       ["jira", "integration", "crm", "flagship"],
+      0
+    ),
+    mk(
+      "Monday.com integration — two-way board sync",
+      "Connect Valorina to Valora's Monday.com (also used as a CRM) via API — sync items, updates and status both ways so ideas/tickets stay aligned across Monday and Jira.",
+      "Kerrelisa",
+      "high",
+      ["monday", "integration", "crm"],
       0
     ),
     mk(

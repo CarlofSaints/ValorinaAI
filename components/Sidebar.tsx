@@ -33,6 +33,11 @@ const nav = [
       </>
     ),
   },
+  {
+    href: "/knowledge",
+    label: "Knowledge Base",
+    icon: <path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" />,
+  },
 ];
 
 const future = [
@@ -50,12 +55,18 @@ const future = [
     ),
   },
   {
-    label: "Client Diagnostics",
-    icon: <path d="M4 5h16M4 12h16M4 19h10" />,
+    label: "Monday.com Sync",
+    icon: (
+      <>
+        <circle cx="6" cy="12" r="2" />
+        <circle cx="12" cy="12" r="2" />
+        <circle cx="18" cy="12" r="2" />
+      </>
+    ),
   },
   {
-    label: "Knowledge Base",
-    icon: <path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5z" />,
+    label: "Client Diagnostics",
+    icon: <path d="M4 5h16M4 12h16M4 19h10" />,
   },
 ];
 

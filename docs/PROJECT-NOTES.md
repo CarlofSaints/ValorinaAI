@@ -46,9 +46,21 @@ Build an **internal AI Business Analyst** — a semi-custom AI workspace that su
 ## 5. Remembered from meeting(s) with client
 
 - **Meeting Agent:** they want an agent that can **sit in and listen to meetings and respond to questions when asked.** (Captured as a flagship idea on the Idea Canvas.)
-- **Jira is their CRM.** Valorina must **integrate with Jira via API and live inside Jira as its own user** — reading/creating issues, commenting, and syncing ideas/tickets both ways. Jira is the system of record. (Captured as a high-priority idea on the Idea Canvas.)
-  - _Implications to scope: Jira Cloud REST API + OAuth/app; a dedicated Jira account (or Atlassian Connect/Forge app) for the agent; field mapping between Valorina ideas and Jira issue types; webhooks for two-way sync._
+- **CRMs = Jira AND Monday.com.** Valorina must integrate with both via API and (for Jira) **live inside Jira as its own user** — reading/creating issues, commenting, syncing ideas/tickets both ways. Treat them as systems of record; keep the two in step. (Both captured as high-priority ideas on the Idea Canvas + roadmap items in the sidebar.)
+  - _Jira scope: Jira Cloud REST API + OAuth/app; a dedicated Jira account (or Atlassian Connect/Forge app) for the agent; field mapping Valorina ideas ↔ Jira issue types; webhooks for two-way sync._
+  - _Monday.com scope: Monday API (GraphQL) + API token/OAuth; map boards/items/columns to Valorina ideas/tickets; webhooks for two-way sync._
 - _[TODO: other requests discussed that Carl couldn't fully recall — confirm with Jerome and log here.]_
+
+## 5a. Valora company profile (digested from valoraadvisory.co.za)
+
+Stored in the app under **Knowledge Base** (`/knowledge`, `lib/valora.ts`) — this is the grounding context for the AI. Highlights:
+
+- **Positioning:** "a consulting and implementation firm — built to close the gap between strategy and execution." Most firms hand over a strategy and leave; Valora pairs senior advisory with hands-on delivery. Taglines: _"Turning Insight into Impact"_ / _"Turning Operational Challenges Into Measurable Business Value."_
+- **The cycle (their approach):** Diagnose → Design → Implement → Measure — "a disciplined cycle, executed in the open." (Aligns tightly with the brief's diagnostic/report focus.)
+- **Service lines (7):** Business Process Optimization; Workflow Automation & Optimization; Systems Integration & Implementation; Data Analytics & Reporting; Cost Optimization Strategies; Carbon Footprint & ESG Reporting Support; AI Integration & Automation (every client gets a bespoke "AI Roadmap").
+- **They already sell AI agents** — published catalogue: AI Receptionist, Sales AI, Finance AI, HR AI, Operations AI, Knowledge AI, Document AI, Executive AI. **Valorina should be positioned as their internal instance of exactly this** — strong alignment.
+- **Proof points they cite:** 40%+ avg process improvement · 30% avg cost reduction · 24/7 agents · 10+ industries · ~1,000 AI engineers in their network. Sector-agnostic (mining, manufacturing, retail, financial services mentioned).
+- **Tone:** professional yet accessible; confident, pragmatic, outcomes-focused; "outcomes on the P&L, not on a pilot dashboard."
 
 ## 6. Open questions for next session
 
