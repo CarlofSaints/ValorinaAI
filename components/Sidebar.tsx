@@ -6,6 +6,17 @@ import { usePathname } from "next/navigation";
 
 const nav = [
   {
+    href: "/ask",
+    label: "Ask Valorian",
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M8.5 10a3.5 3.5 0 1 1 5 3.2c-.9.5-1.5 1-1.5 2" />
+        <circle cx="12" cy="17.5" r="0.6" fill="currentColor" />
+      </>
+    ),
+  },
+  {
     href: "/idea-canvas",
     label: "Idea Canvas",
     icon: (

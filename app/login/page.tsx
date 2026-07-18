@@ -21,7 +21,7 @@ export default function LoginPage() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Login failed");
-      const next = new URLSearchParams(window.location.search).get("next") || "/idea-canvas";
+      const next = new URLSearchParams(window.location.search).get("next") || "/ask";
       window.location.href = next;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");

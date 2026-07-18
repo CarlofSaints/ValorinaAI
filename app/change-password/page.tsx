@@ -26,7 +26,7 @@ export default function ChangePasswordPage() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Failed");
-      window.location.href = "/idea-canvas";
+      window.location.href = "/ask";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed");
       setBusy(false);
