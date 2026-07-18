@@ -92,6 +92,20 @@ _These map cleanly onto the build so far: the Idea Canvas (capture), the Assessm
 - **Eventually — MFA (client wants, staged):** (1) email confirmation to verify a new user's email; (2) OTP via email; (3) OTP via SMS; (4) authenticator-app TOTP (Authy / Microsoft Authenticator). Build in that order.
 - **Also pending:** a self-service change-password entry point for already-logged-in users (currently only forced-change or admin reset); real email go-live (`EMAIL_GO_LIVE=true`, set via Vercel dashboard not PowerShell) so credential/welcome emails actually reach users.
 
+## 5d. Phase 1 scope & benefits (to send to client, drafted 18 Jul)
+
+Anchored on client's priority tasks **A** (Client Diagnostic Preparation) and **E** (Proposal & Pitch Support), plus the flagship conversational agent and the enablers. Foundation/assessment/knowledge-base already built & live at valorina-ai.vercel.app; AI pieces are next (need ANTHROPIC_API_KEY).
+
+1. **Valorian Assistant — ask by text or voice** (flagship, NEW): conversational AI the team queries in plain language (typed or spoken), grounded in Valora's knowledge base + client data. *Benefits:* instant answers/drafts on demand; natural text or voice; single place to "ask Valora's brain"; brings Valorian to life; low barrier for the whole team.
+2. **AI Client Diagnostic Preparation (Task A — priority):** from assessment + client website + public info, drafts background summary, key issues, pain points, diagnostic questions, interview guides, risk areas, improvement themes. *Benefits:* far better prepared in a fraction of the time; consistent senior-level prep regardless of who runs it.
+3. **AI Proposal & Pitch Support (Task E — priority):** drafts client-specific proposals, pilot scopes, pricing explanations, exec summaries, sector talking points, follow-up emails. *Benefits:* respond fast and professionally; BD lead positions solutions intelligently; shorter enquiry→proposal turnaround.
+4. **Digital Client Assessment (VAL-S1-FORM1.1 online) — BUILT:** shareable online form, doc uploads, auto-captured + tracked. *Benefits:* no chasing forms; professional client experience; consistent baseline before every engagement.
+5. **Knowledge Base (Valora IP) — BUILT (storage):** secure store of templates, proposals, case studies, methodology; grounds all AI output. *Benefits:* standardised delivery; no reinventing the wheel; IP stays owned by Valora.
+6. **Secure Valora Workspace (foundation) — BUILT:** branded private workspace, per-user login, roles & permissions. *Benefits:* secure NDA/POPIA-aligned data handling; right people see right things; professional from day one.
+7. **CRM Integration (Jira & Monday.com) — in progress:** auto pre-fill + issue the assessment when a lead is created/qualified in the CRM; keep records in step. *Benefits:* no double entry; Valorian works inside existing systems; faster lead→diagnostic flow.
+
+Throughout: Valora retains ownership of templates/logic/methodology; secure data handling; built to scale into later phases (process review, report drafting, KPI/dashboards, sales support). NOTE: proposal deliberately left cost/timeline to the paid Discovery session — this doc is scope+benefits only, no numbers. CRM integration is a judgment call for P1 vs P2 (Carl to confirm).
+
 ## 6. Open questions for next session
 
 - Confirm the full list of asks from the earlier meeting (memory gaps).
