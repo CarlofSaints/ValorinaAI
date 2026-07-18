@@ -6,17 +6,21 @@ function resendClient() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
+// Strip a leading BOM/whitespace — PowerShell's `vercel env add` injects a BOM
+// into piped values, which corrupts email addresses and the go-live flag.
+const clean = (v: string | undefined) => (v || "").replace(/^﻿/, "").trim();
+
 // From a verified domain (outerjoin.co.za). Overridable via env.
-const FROM = process.env.EMAIL_FROM || "Valorian <valorian@outerjoin.co.za>";
+const FROM = clean(process.env.EMAIL_FROM) || "Valorian <valorian@outerjoin.co.za>";
 
 // SAFETY GATE (fail-safe): every outbound email is redirected to a test inbox
 // UNLESS EMAIL_GO_LIVE === "true". So the default state — including a missing or
 // empty EMAIL_TEST_RECIPIENT — still cannot email real recipients. To actually
 // go live you must deliberately set EMAIL_GO_LIVE=true.
-const GO_LIVE = process.env.EMAIL_GO_LIVE === "true";
+const GO_LIVE = clean(process.env.EMAIL_GO_LIVE) === "true";
 const TEST_RECIPIENT = GO_LIVE
-  ? process.env.EMAIL_TEST_RECIPIENT || null // live: only gated if a test inbox is still set
-  : process.env.EMAIL_TEST_RECIPIENT || "carl@outerjoin.co.za"; // not live: always gated
+  ? clean(process.env.EMAIL_TEST_RECIPIENT) || null // live: only gated if a test inbox is still set
+  : clean(process.env.EMAIL_TEST_RECIPIENT) || "carl@outerjoin.co.za"; // not live: always gated
 
 const BRAND = {
   navy: "#0a1a2f",
