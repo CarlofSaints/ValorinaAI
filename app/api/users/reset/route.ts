@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
-import { requireAdmin } from "@/lib/auth-server";
+import { requirePermission } from "@/lib/auth-server";
 import { adminResetPassword, findUser } from "@/lib/users-store";
 import { sendCredentialsEmail } from "@/lib/email";
 
@@ -13,8 +13,8 @@ function generatePassword(): string {
 // Admin resets a user's password. If no password supplied, auto-generates one.
 // Always forces the user to change it on next login. Emails the new credentials.
 export async function POST(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  const admin = await requirePermission("invite_users");
+  if (!admin) return NextResponse.json({ error: "You don't have permission to manage users." }, { status: 403 });
 
   const body = await req.json();
   const email = String(body.email || "");

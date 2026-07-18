@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { TEAM_NAMES } from "@/lib/team";
+import { usePermissions } from "@/lib/usePermissions";
 
 interface Doc {
   pathname: string;
@@ -60,6 +61,8 @@ export default function KnowledgeDocuments() {
   const [tagDraft, setTagDraft] = useState("");
   const [drag, setDrag] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const perms = usePermissions();
+  const canManage = Boolean(perms.manage_kb);
 
   useEffect(() => {
     setMeta(loadMeta());
@@ -152,6 +155,13 @@ export default function KnowledgeDocuments() {
         <span className="badge badge-navy">{docs.length} file{docs.length === 1 ? "" : "s"}</span>
       </div>
 
+      {!canManage && (
+        <div style={{ fontSize: 12.5, color: "var(--ink-faint)", margin: "14px 0 4px" }}>
+          You have view-only access — only users with the &quot;Manage knowledge base&quot; permission can add or remove documents.
+        </div>
+      )}
+      {canManage && (
+      <>
       {/* uploader controls */}
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", margin: "16px 0 12px", alignItems: "center" }}>
         <div style={{ fontSize: 12, color: "var(--ink-soft)" }}>Uploading as</div>
@@ -201,6 +211,8 @@ export default function KnowledgeDocuments() {
           }}
         />
       </div>
+      </>
+      )}
 
       {error && (
         <div style={{ marginTop: 12, fontSize: 12, padding: "9px 12px", borderRadius: 8, background: "rgba(220,38,38,0.08)", color: "#b91c1c", border: "1px solid rgba(220,38,38,0.25)" }}>
@@ -250,9 +262,11 @@ export default function KnowledgeDocuments() {
                   <a className="btn btn-ghost" style={{ padding: "6px 12px" }} href={viewUrl(doc, true)}>
                     Download
                   </a>
-                  <button className="del-idea" onClick={() => remove(doc)} style={{ padding: "6px 8px" }}>
-                    Delete
-                  </button>
+                  {canManage && (
+                    <button className="del-idea" onClick={() => remove(doc)} style={{ padding: "6px 8px" }}>
+                      Delete
+                    </button>
+                  )}
                 </div>
               );
             })}

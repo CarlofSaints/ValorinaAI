@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { put, list, del } from "@vercel/blob";
+import { requirePermission } from "@/lib/auth-server";
 
 export const runtime = "nodejs";
+
+const DENY_KB = NextResponse.json(
+  { error: "You don't have permission to manage the knowledge base." },
+  { status: 403 }
+);
 
 const PREFIX = "documents/";
 // Vercel serverless request bodies are capped ~4.5MB. Phase 1 uploads go
@@ -42,6 +48,7 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!(await requirePermission("manage_kb"))) return DENY_KB;
   try {
     const form = await req.formData();
     const file = form.get("file");
@@ -81,6 +88,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  if (!(await requirePermission("manage_kb"))) return DENY_KB;
   try {
     const url = new URL(req.url).searchParams.get("url");
     if (!url) {

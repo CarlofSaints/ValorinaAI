@@ -102,25 +102,28 @@ export default function RolesPage() {
                       <div style={{ fontSize: 12, color: "var(--ink-faint)" }}>{p.hint}</div>
                     </td>
                     {roles.map((r) => {
-                      const on = Boolean(matrix[r.name]?.[p.id]);
+                      const locked = r.name === "Administrator"; // admins always have every permission
+                      const on = locked ? true : Boolean(matrix[r.name]?.[p.id]);
+                      const editable = canEdit && !locked;
                       return (
                         <td key={r.name} style={{ textAlign: "center" }}>
                           <button
                             role="switch"
                             aria-checked={on}
                             aria-label={`${p.label} for ${r.name}`}
-                            disabled={!canEdit}
-                            onClick={() => toggle(r.name, p.id)}
+                            disabled={!editable}
+                            title={locked ? "Administrators always have every permission" : undefined}
+                            onClick={() => editable && toggle(r.name, p.id)}
                             style={{
                               width: 40,
                               height: 22,
                               borderRadius: 999,
                               border: "none",
                               position: "relative",
-                              cursor: canEdit ? "pointer" : "default",
+                              cursor: editable ? "pointer" : "default",
                               background: on ? "var(--gold)" : "var(--border-strong)",
                               transition: "background .15s",
-                              opacity: canEdit ? 1 : 0.7,
+                              opacity: editable ? 1 : 0.75,
                               verticalAlign: "middle",
                             }}
                           >

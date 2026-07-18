@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listUsers, addUser, deleteUser, updateUser } from "@/lib/users-store";
-import { getSession, requireAdmin } from "@/lib/auth-server";
+import { getSession, requirePermission } from "@/lib/auth-server";
 import { sendCredentialsEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
@@ -12,8 +12,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  const admin = await requirePermission("invite_users");
+  if (!admin) return NextResponse.json({ error: "You don't have permission to manage users." }, { status: 403 });
   const body = await req.json();
   const email = String(body.email || "");
   const name = String(body.name || "");
@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  const admin = await requirePermission("invite_users");
+  if (!admin) return NextResponse.json({ error: "You don't have permission to manage users." }, { status: 403 });
   const body = await req.json();
   const email = String(body.email || "");
   if (!email) return NextResponse.json({ error: "Missing email" }, { status: 400 });
@@ -48,8 +48,8 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  const admin = await requirePermission("invite_users");
+  if (!admin) return NextResponse.json({ error: "You don't have permission to manage users." }, { status: 403 });
   const email = new URL(req.url).searchParams.get("email");
   if (!email) return NextResponse.json({ error: "Missing email" }, { status: 400 });
   if (email.toLowerCase() === admin.email.toLowerCase()) {

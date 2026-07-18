@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createLead, listLeads } from "@/lib/assessment-store";
 import { sendAssessmentInviteEmail } from "@/lib/email";
+import { requirePermission } from "@/lib/auth-server";
 
 export const runtime = "nodejs";
 
@@ -22,6 +23,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  if (!(await requirePermission("manage_assessments"))) {
+    return NextResponse.json({ error: "You don't have permission to send assessments." }, { status: 403 });
+  }
   try {
     const body = await req.json();
     const company = String(body.company || "").trim();

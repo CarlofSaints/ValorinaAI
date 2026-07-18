@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Topbar from "@/components/Topbar";
 import InviteUser from "@/components/InviteUser";
+import { usePermissions } from "@/lib/usePermissions";
 
 interface PublicUser {
   email: string;
@@ -63,7 +64,8 @@ export default function UsersPage() {
     }
   }
 
-  const isAdmin = me?.role === "Administrator";
+  const perms = usePermissions();
+  const isAdmin = Boolean(perms.invite_users); // controls the user-management UI
 
   async function addUser(e: React.FormEvent) {
     e.preventDefault();

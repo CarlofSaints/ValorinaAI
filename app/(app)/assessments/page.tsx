@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Topbar from "@/components/Topbar";
 import { TEAM_NAMES } from "@/lib/team";
+import { usePermissions } from "@/lib/usePermissions";
 
 interface Lead {
   id: string;
@@ -93,6 +94,8 @@ export default function AssessmentsPage() {
   }
 
   const submitted = leads.filter((l) => l.status === "submitted").length;
+  const perms = usePermissions();
+  const canManage = Boolean(perms.manage_assessments);
 
   return (
     <>
@@ -107,9 +110,11 @@ export default function AssessmentsPage() {
               Valora&apos;s form <strong>VAL-S1-FORM1.1</strong>.
             </p>
           </div>
-          <button className="btn btn-gold" onClick={() => setOpen((o) => !o)}>
-            + New assessment
-          </button>
+          {canManage && (
+            <button className="btn btn-gold" onClick={() => setOpen((o) => !o)}>
+              + New assessment
+            </button>
+          )}
         </div>
 
         <div className="stat-row">
@@ -244,7 +249,9 @@ export default function AssessmentsPage() {
                       <Link className="btn btn-ghost" style={{ padding: "6px 10px", marginRight: 6 }} href={`/assessments/${l.id}`}>
                         View
                       </Link>
-                      <button className="del-idea" style={{ padding: "6px 8px" }} onClick={() => remove(l)}>Delete</button>
+                      {canManage && (
+                        <button className="del-idea" style={{ padding: "6px 8px" }} onClick={() => remove(l)}>Delete</button>
+                      )}
                     </td>
                   </tr>
                 ))

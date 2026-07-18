@@ -74,6 +74,22 @@ export async function getMatrix(): Promise<Matrix> {
   }
 }
 
+// Administrators always pass (prevents locking yourself out of role management).
+export async function can(role: string, permId: string): Promise<boolean> {
+  if (role === "Administrator") return true;
+  const m = await getMatrix();
+  return Boolean(m[role]?.[permId]);
+}
+
+export async function permissionsForRole(role: string): Promise<Record<string, boolean>> {
+  const m = await getMatrix();
+  const out: Record<string, boolean> = {};
+  for (const p of PERMISSIONS) {
+    out[p.id] = role === "Administrator" ? true : Boolean(m[role]?.[p.id]);
+  }
+  return out;
+}
+
 export async function saveMatrix(matrix: Matrix): Promise<Matrix> {
   const clean = normalise(matrix);
   await put(PATH, JSON.stringify(clean, null, 2), {

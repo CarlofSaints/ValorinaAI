@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getMatrix, saveMatrix, PERMISSIONS, ROLES } from "@/lib/roles-store";
-import { getSession, requireAdmin } from "@/lib/auth-server";
+import { getMatrix, saveMatrix, PERMISSIONS, ROLES, can } from "@/lib/roles-store";
+import { getSession, requirePermission } from "@/lib/auth-server";
 
 export const runtime = "nodejs";
 
@@ -12,13 +12,13 @@ export async function GET() {
     permissions: PERMISSIONS,
     roles: ROLES,
     matrix,
-    canEdit: s.role === "Administrator",
+    canEdit: await can(s.role, "manage_roles"),
   });
 }
 
 export async function PUT(req: NextRequest) {
-  const admin = await requireAdmin();
-  if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  const admin = await requirePermission("manage_roles");
+  if (!admin) return NextResponse.json({ error: "You don't have permission to manage roles." }, { status: 403 });
   const body = await req.json();
   if (!body || typeof body.matrix !== "object") {
     return NextResponse.json({ error: "Missing matrix" }, { status: 400 });
