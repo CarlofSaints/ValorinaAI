@@ -69,7 +69,10 @@ export default function AskValorian() {
     <div
       style={{
         minHeight: "calc(100vh - 62px)",
-        background: "radial-gradient(1200px 500px at 50% -5%, #12294a 0%, #0a1a2f 55%, #081426 100%)",
+        // Match the orb's own navy stage (#080e1a) at the centre so the iframe
+        // panel blends into the page; lift very slightly toward the edges for depth.
+        background:
+          "radial-gradient(1200px 820px at 50% 30%, #080e1a 0%, #080e1a 42%, #0b1626 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -81,10 +84,15 @@ export default function AskValorian() {
         style={{
           position: "relative",
           width: "100%",
-          maxWidth: 560,
-          height: 380,
+          maxWidth: 840,
+          height: 570,
           overflow: "hidden",
           marginTop: 6,
+          // Feather the panel's rectangular edges into the (matching) page bg.
+          WebkitMaskImage:
+            "radial-gradient(ellipse 78% 86% at 50% 45%, #000 62%, transparent 100%)",
+          maskImage:
+            "radial-gradient(ellipse 78% 86% at 50% 45%, #000 62%, transparent 100%)",
         }}
       >
         <iframe
