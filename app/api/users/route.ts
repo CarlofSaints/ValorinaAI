@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listUsers, addUser, deleteUser } from "@/lib/users-store";
+import { listUsers, addUser, deleteUser, updateUser } from "@/lib/users-store";
 import { getSession, requireAdmin } from "@/lib/auth-server";
 import { sendCredentialsEmail } from "@/lib/email";
 
@@ -34,6 +34,17 @@ export async function POST(req: NextRequest) {
     : `User created, but the welcome email failed: ${mail.error}`;
 
   return NextResponse.json({ ok: true, emailStatus });
+}
+
+export async function PATCH(req: NextRequest) {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
+  const body = await req.json();
+  const email = String(body.email || "");
+  if (!email) return NextResponse.json({ error: "Missing email" }, { status: 400 });
+  const res = await updateUser(email, { name: body.name, role: body.role });
+  if (!res.ok) return NextResponse.json({ error: res.error }, { status: 400 });
+  return NextResponse.json({ ok: true });
 }
 
 export async function DELETE(req: NextRequest) {

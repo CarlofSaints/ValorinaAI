@@ -105,6 +105,19 @@ export async function userChangePassword(email: string, password: string): Promi
   return true;
 }
 
+export async function updateUser(
+  email: string,
+  changes: { name?: string; role?: string }
+): Promise<{ ok: boolean; error?: string }> {
+  const users = await readAll();
+  const u = users.find((x) => x.email.toLowerCase() === email.trim().toLowerCase());
+  if (!u) return { ok: false, error: "User not found." };
+  if (typeof changes.name === "string" && changes.name.trim()) u.name = changes.name.trim();
+  if (typeof changes.role === "string" && changes.role.trim()) u.role = changes.role.trim();
+  await writeAll(users);
+  return { ok: true };
+}
+
 export async function deleteUser(email: string): Promise<void> {
   const users = await readAll();
   await writeAll(users.filter((u) => u.email.toLowerCase() !== email.trim().toLowerCase()));

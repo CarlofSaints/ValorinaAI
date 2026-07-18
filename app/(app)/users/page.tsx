@@ -43,6 +43,9 @@ export default function UsersPage() {
   const [password, setPassword] = useState("");
   const [mustChange, setMustChange] = useState(true);
   const [resetInfo, setResetInfo] = useState<{ email: string; password: string; msg: string } | null>(null);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editRole, setEditRole] = useState("Consultant");
 
   useEffect(() => {
     refresh();
@@ -115,6 +118,26 @@ export default function UsersPage() {
       return;
     }
     setResetInfo({ email: u.email, password: json.password, msg: json.emailStatus || "" });
+  }
+
+  function startEdit(u: PublicUser) {
+    setEditing(u.email);
+    setEditName(u.name);
+    setEditRole(u.role);
+  }
+  async function saveEdit(u: PublicUser) {
+    const res = await fetch("/api/users", {
+      method: "PATCH",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: u.email, name: editName, role: editRole }),
+    });
+    if (res.ok) {
+      setEditing(null);
+      refresh();
+    } else {
+      const j = await res.json();
+      alert(j.error || "Update failed");
+    }
   }
 
   return (
@@ -215,34 +238,64 @@ export default function UsersPage() {
               ) : users.length === 0 ? (
                 <tr><td colSpan={4} style={{ color: "var(--ink-faint)", textAlign: "center", padding: 30 }}>No users yet.</td></tr>
               ) : (
-                users.map((u) => (
-                  <tr key={u.email}>
-                    <td>
-                      <div className="user-cell">
-                        <div className="user-avatar" style={{ background: colorFor(u.name) }}>{initials(u.name)}</div>
-                        <div>
-                          <div className="user-name">
-                            {u.name}
-                            {me?.email === u.email && <span style={{ color: "var(--ink-faint)", fontWeight: 400 }}> (you)</span>}
+                users.map((u) => {
+                  const isEditing = editing === u.email;
+                  return (
+                    <tr key={u.email}>
+                      <td>
+                        <div className="user-cell">
+                          <div className="user-avatar" style={{ background: colorFor(u.name) }}>{initials(u.name)}</div>
+                          <div>
+                            {isEditing ? (
+                              <input
+                                type="text"
+                                value={editName}
+                                onChange={(e) => setEditName(e.target.value)}
+                                style={{ padding: "5px 8px", border: "1px solid var(--border-strong)", borderRadius: 6, fontSize: 13, width: 200 }}
+                              />
+                            ) : (
+                              <div className="user-name">
+                                {u.name}
+                                {me?.email === u.email && <span style={{ color: "var(--ink-faint)", fontWeight: 400 }}> (you)</span>}
+                              </div>
+                            )}
+                            <div className="user-email">{u.email}</div>
                           </div>
-                          <div className="user-email">{u.email}</div>
                         </div>
-                      </div>
-                    </td>
-                    <td><span className={`badge ${roleClass[u.role] || "badge-navy"}`}>{u.role}</span></td>
-                    <td style={{ fontSize: 13, color: "var(--ink-soft)" }}>
-                      {u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-ZA", { day: "numeric", month: "short", year: "numeric" }) : "—"}
-                    </td>
-                    {isAdmin && (
-                      <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
-                        <button className="btn btn-ghost" style={{ padding: "6px 10px", marginRight: 6 }} onClick={() => resetPw(u)}>Reset PW</button>
-                        {me?.email !== u.email && (
-                          <button className="del-idea" style={{ padding: "6px 8px" }} onClick={() => remove(u)}>Remove</button>
+                      </td>
+                      <td>
+                        {isEditing ? (
+                          <select value={editRole} onChange={(e) => setEditRole(e.target.value)} style={{ padding: "5px 8px", border: "1px solid var(--border-strong)", borderRadius: 6, fontSize: 13 }}>
+                            {ROLES.map((r) => (<option key={r}>{r}</option>))}
+                          </select>
+                        ) : (
+                          <span className={`badge ${roleClass[u.role] || "badge-navy"}`}>{u.role}</span>
                         )}
                       </td>
-                    )}
-                  </tr>
-                ))
+                      <td style={{ fontSize: 13, color: "var(--ink-soft)" }}>
+                        {u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-ZA", { day: "numeric", month: "short", year: "numeric" }) : "—"}
+                      </td>
+                      {isAdmin && (
+                        <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+                          {isEditing ? (
+                            <>
+                              <button className="btn btn-primary" style={{ padding: "6px 12px", marginRight: 6 }} onClick={() => saveEdit(u)}>Save</button>
+                              <button className="btn btn-ghost" style={{ padding: "6px 10px" }} onClick={() => setEditing(null)}>Cancel</button>
+                            </>
+                          ) : (
+                            <>
+                              <button className="btn btn-ghost" style={{ padding: "6px 10px", marginRight: 6 }} onClick={() => startEdit(u)}>Edit</button>
+                              <button className="btn btn-ghost" style={{ padding: "6px 10px", marginRight: 6 }} onClick={() => resetPw(u)}>Reset PW</button>
+                              {me?.email !== u.email && (
+                                <button className="del-idea" style={{ padding: "6px 8px" }} onClick={() => remove(u)}>Remove</button>
+                              )}
+                            </>
+                          )}
+                        </td>
+                      )}
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
