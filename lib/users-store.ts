@@ -11,6 +11,7 @@ export interface AppUser {
   role: string;
   passwordHash: string;
   createdAt: string;
+  mustChangePassword?: boolean;
 }
 
 export type PublicUser = Omit<AppUser, "passwordHash">;
@@ -61,6 +62,7 @@ export async function addUser(input: {
   name: string;
   role: string;
   password: string;
+  mustChangePassword?: boolean;
 }): Promise<{ ok: boolean; error?: string }> {
   const email = input.email.trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Invalid email." };
@@ -75,16 +77,30 @@ export async function addUser(input: {
     role: input.role || "Consultant",
     passwordHash: hashPassword(input.password),
     createdAt: new Date().toISOString(),
+    mustChangePassword: input.mustChangePassword ?? false,
   });
   await writeAll(users);
   return { ok: true };
 }
 
-export async function setPassword(email: string, password: string): Promise<boolean> {
+// Admin sets a new password AND forces the user to change it on next login.
+export async function adminResetPassword(email: string, password: string): Promise<boolean> {
   const users = await readAll();
   const u = users.find((x) => x.email.toLowerCase() === email.trim().toLowerCase());
   if (!u) return false;
   u.passwordHash = hashPassword(password);
+  u.mustChangePassword = true;
+  await writeAll(users);
+  return true;
+}
+
+// The user chooses their own new password — clears the force-change flag.
+export async function userChangePassword(email: string, password: string): Promise<boolean> {
+  const users = await readAll();
+  const u = users.find((x) => x.email.toLowerCase() === email.trim().toLowerCase());
+  if (!u) return false;
+  u.passwordHash = hashPassword(password);
+  u.mustChangePassword = false;
   await writeAll(users);
   return true;
 }

@@ -41,6 +41,8 @@ export default function UsersPage() {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("Consultant");
   const [password, setPassword] = useState("");
+  const [mustChange, setMustChange] = useState(true);
+  const [resetInfo, setResetInfo] = useState<{ email: string; password: string; msg: string } | null>(null);
 
   useEffect(() => {
     refresh();
@@ -68,7 +70,7 @@ export default function UsersPage() {
       const res = await fetch("/api/users", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ name, email, role, password }),
+        body: JSON.stringify({ name, email, role, password, mustChangePassword: mustChange }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Failed");
@@ -80,6 +82,7 @@ export default function UsersPage() {
       setEmail("");
       setPassword("");
       setRole("Consultant");
+      setMustChange(true);
       refresh();
     } catch (err) {
       setStatus({ ok: false, msg: err instanceof Error ? err.message : "Failed" });
@@ -96,6 +99,22 @@ export default function UsersPage() {
       const j = await res.json();
       alert(j.error || "Could not remove user");
     }
+  }
+
+  async function resetPw(u: PublicUser) {
+    if (!confirm(`Reset ${u.name}'s password? A new auto-generated password will be set and they'll be required to change it on next sign-in.`)) return;
+    setResetInfo(null);
+    const res = await fetch("/api/users/reset", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: u.email }),
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      alert(json.error || "Reset failed");
+      return;
+    }
+    setResetInfo({ email: u.email, password: json.password, msg: json.emailStatus || "" });
   }
 
   return (
@@ -147,8 +166,13 @@ export default function UsersPage() {
                 <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} placeholder="set a password to share" />
               </div>
             </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "var(--ink-soft)", marginBottom: 12, cursor: "pointer" }}>
+              <input type="checkbox" checked={mustChange} onChange={(e) => setMustChange(e.target.checked)} />
+              Require password change on first sign-in
+            </label>
             <div style={{ fontSize: 12, color: "var(--ink-faint)", marginBottom: 12 }}>
               The password is shown here so you can copy and share it securely. It&apos;s stored only as a salted hash.
+              A welcome email with these details is sent to the user (redirected to the test inbox until go-live).
             </div>
             <button type="submit" className="btn btn-primary" disabled={busy}>
               {busy ? "Adding…" : "Add user"}
@@ -159,6 +183,20 @@ export default function UsersPage() {
               </div>
             )}
           </form>
+        )}
+
+        {resetInfo && (
+          <div className="card" style={{ padding: 16, marginBottom: 16, borderLeft: "3px solid var(--gold)" }}>
+            <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 6 }}>New password for {resetInfo.email}</div>
+            <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+              <code style={{ background: "#f5f6f8", padding: "6px 10px", borderRadius: 6, border: "1px solid var(--border)", fontSize: 13 }}>{resetInfo.password}</code>
+              <button className="btn btn-ghost" style={{ padding: "6px 12px" }} onClick={() => navigator.clipboard.writeText(resetInfo.password)}>Copy</button>
+              <button className="del-idea" style={{ padding: "6px 8px" }} onClick={() => setResetInfo(null)}>Dismiss</button>
+            </div>
+            <div style={{ fontSize: 12, color: "var(--ink-faint)", marginTop: 8 }}>
+              They&apos;ll be required to change it on next sign-in. {resetInfo.msg}
+            </div>
+          </div>
         )}
 
         <div className="card">
@@ -196,7 +234,8 @@ export default function UsersPage() {
                       {u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-ZA", { day: "numeric", month: "short", year: "numeric" }) : "—"}
                     </td>
                     {isAdmin && (
-                      <td style={{ textAlign: "right" }}>
+                      <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+                        <button className="btn btn-ghost" style={{ padding: "6px 10px", marginRight: 6 }} onClick={() => resetPw(u)}>Reset PW</button>
                         {me?.email !== u.email && (
                           <button className="del-idea" style={{ padding: "6px 8px" }} onClick={() => remove(u)}>Remove</button>
                         )}

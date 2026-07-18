@@ -9,6 +9,7 @@ export interface Session {
   name: string;
   role: string;
   exp: number;
+  mustChange?: boolean;
 }
 
 function toB64Url(str: string): string {

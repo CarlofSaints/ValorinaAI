@@ -19,7 +19,26 @@ export async function middleware(req: NextRequest) {
 
   const token = req.cookies.get(SESSION_COOKIE)?.value;
   const session = await verifySession(token);
-  if (session) return NextResponse.next();
+
+  if (session) {
+    // Forced password change: send the user to /change-password until done.
+    // Exempt the change-password page + its API + logout so it can't loop.
+    const changePwExempt =
+      path === "/change-password" ||
+      path === "/api/auth/change-password" ||
+      path === "/api/auth/logout" ||
+      path === "/api/auth/me";
+    if (session.mustChange && !changePwExempt) {
+      if (path.startsWith("/api/")) {
+        return NextResponse.json({ error: "Password change required" }, { status: 403 });
+      }
+      const url = req.nextUrl.clone();
+      url.pathname = "/change-password";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
 
   if (path.startsWith("/api/")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

@@ -86,6 +86,12 @@ Verbatim-faithful capture of what the client wants Valorian to do. This supersed
 
 _These map cleanly onto the build so far: the Idea Canvas (capture), the Assessments/intake feature (A + C — client diagnostic gathering), and the Knowledge Base (H). D/E/F/G are the AI-generation surfaces to build once an Anthropic key + RAG are in._
 
+## 5c. Security / auth roadmap
+
+- **Done:** per-user login (Blob-backed users, scrypt hashes, HMAC session cookie), route protection via middleware, admin add/remove/reset users, welcome email with credentials, **force-password-change on first login** (flag in session cookie + re-issued on change → no redirect loop; Blob live-read avoids the env-var lag that looped Defy-Field-Execute).
+- **Eventually — MFA (client wants, staged):** (1) email confirmation to verify a new user's email; (2) OTP via email; (3) OTP via SMS; (4) authenticator-app TOTP (Authy / Microsoft Authenticator). Build in that order.
+- **Also pending:** a self-service change-password entry point for already-logged-in users (currently only forced-change or admin reset); real email go-live (`EMAIL_GO_LIVE=true`, set via Vercel dashboard not PowerShell) so credential/welcome emails actually reach users.
+
 ## 6. Open questions for next session
 
 - Confirm the full list of asks from the earlier meeting (memory gaps).

@@ -19,8 +19,9 @@ export async function POST(req: NextRequest) {
   const name = String(body.name || "");
   const role = String(body.role || "Consultant");
   const password = String(body.password || "");
+  const mustChangePassword = Boolean(body.mustChangePassword);
 
-  const res = await addUser({ email, name, role, password });
+  const res = await addUser({ email, name, role, password, mustChangePassword });
   if (!res.ok) return NextResponse.json({ error: res.error }, { status: 400 });
 
   // Email the new user their login (gated to the test inbox unless EMAIL_GO_LIVE=true).
