@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listUsers, addUser, deleteUser } from "@/lib/users-store";
 import { getSession, requireAdmin } from "@/lib/auth-server";
+import { sendCredentialsEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -14,14 +15,24 @@ export async function POST(req: NextRequest) {
   const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Admin only" }, { status: 403 });
   const body = await req.json();
-  const res = await addUser({
-    email: String(body.email || ""),
-    name: String(body.name || ""),
-    role: String(body.role || "Consultant"),
-    password: String(body.password || ""),
-  });
+  const email = String(body.email || "");
+  const name = String(body.name || "");
+  const role = String(body.role || "Consultant");
+  const password = String(body.password || "");
+
+  const res = await addUser({ email, name, role, password });
   if (!res.ok) return NextResponse.json({ error: res.error }, { status: 400 });
-  return NextResponse.json({ ok: true });
+
+  // Email the new user their login (gated to the test inbox unless EMAIL_GO_LIVE=true).
+  const loginUrl = `${new URL(req.url).origin}/login`;
+  const mail = await sendCredentialsEmail({ to: email, name, role, password, loginUrl });
+  const emailStatus = mail.ok
+    ? mail.redirected
+      ? `Welcome email redirected to the test inbox (${mail.to}) — not yet live to real addresses.`
+      : `Welcome email sent to ${email}.`
+    : `User created, but the welcome email failed: ${mail.error}`;
+
+  return NextResponse.json({ ok: true, emailStatus });
 }
 
 export async function DELETE(req: NextRequest) {

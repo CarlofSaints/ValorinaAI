@@ -113,6 +113,34 @@ export function sendUserInviteEmail(params: {
   );
 }
 
+export function sendCredentialsEmail(params: {
+  to: string;
+  name: string;
+  role: string;
+  password: string;
+  loginUrl: string;
+}): Promise<SendResult> {
+  const { to, name, role, password, loginUrl } = params;
+  const subject = `Your Valorian workspace login`;
+  return deliver(to, subject, (gatedNote) =>
+    shell(
+      `Welcome to Valorian${name ? `, ${name.split(" ")[0]}` : ""}`,
+      `<p style="font-size:14px;line-height:1.6;color:#4a5a72;">
+         An account has been created for you on Valora Advisory's <strong>Valorian</strong> workspace.
+         Here are your sign-in details:
+       </p>
+       <table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;">
+         <tr><td style="padding:8px 0;color:#8a97a9;width:100px;">Email</td><td style="padding:8px 0;font-weight:600;">${to}</td></tr>
+         <tr><td style="padding:8px 0;color:#8a97a9;">Password</td><td style="padding:8px 0;font-weight:600;font-family:monospace;">${password}</td></tr>
+         <tr><td style="padding:8px 0;color:#8a97a9;">Role</td><td style="padding:8px 0;font-weight:600;">${role}</td></tr>
+       </table>
+       <a href="${loginUrl}" style="display:inline-block;background:${BRAND.gold};color:${BRAND.navy};font-weight:700;font-size:14px;text-decoration:none;padding:12px 24px;border-radius:9px;">Sign in →</a>
+       <p style="font-size:12px;color:#8a97a9;margin-top:14px;">For your security, please keep this password private and change it after your first sign-in.</p>`,
+      gatedNote
+    )
+  );
+}
+
 export function sendAssessmentInviteEmail(params: {
   to: string;
   company: string;

@@ -53,7 +53,9 @@ async function putJson(pathname: string, obj: unknown) {
 
 async function getJson<T>(pathname: string): Promise<T | null> {
   try {
-    const res = await get(pathname, { access: "private" });
+    // useCache:false for read-after-write consistency (submissions flip lead
+    // status immediately; Monday webhook dedup must see freshly-created leads).
+    const res = await get(pathname, { access: "private", useCache: false });
     if (!res || res.statusCode !== 200) return null;
     const text = await new Response(res.stream).text();
     return JSON.parse(text) as T;

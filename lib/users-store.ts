@@ -23,7 +23,9 @@ function strip(u: AppUser): PublicUser {
 
 async function readAll(): Promise<AppUser[]> {
   try {
-    const res = await get(PATH, { access: "private" });
+    // useCache:false — auth correctness needs read-after-write consistency;
+    // the default cache would serve a stale user list right after adding someone.
+    const res = await get(PATH, { access: "private", useCache: false });
     if (!res || res.statusCode !== 200) return [];
     const text = await new Response(res.stream).text();
     return JSON.parse(text) as AppUser[];

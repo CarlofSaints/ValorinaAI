@@ -72,7 +72,10 @@ export default function UsersPage() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Failed");
-      setStatus({ ok: true, msg: `${name || email} added. Share their password securely.` });
+      setStatus({
+        ok: true,
+        msg: `${name || email} added. ${json.emailStatus || "Share their password securely."}`,
+      });
       setName("");
       setEmail("");
       setPassword("");
