@@ -18,9 +18,11 @@ const FROM = clean(process.env.EMAIL_FROM) || "Valorian <valorian@outerjoin.co.z
 // empty EMAIL_TEST_RECIPIENT — still cannot email real recipients. To actually
 // go live you must deliberately set EMAIL_GO_LIVE=true.
 const GO_LIVE = clean(process.env.EMAIL_GO_LIVE) === "true";
+// Live => send to real recipients, no redirect. Not live => always redirect to a
+// test inbox (env, or a hard-coded fallback so an empty env can't leak email).
 const TEST_RECIPIENT = GO_LIVE
-  ? clean(process.env.EMAIL_TEST_RECIPIENT) || null // live: only gated if a test inbox is still set
-  : clean(process.env.EMAIL_TEST_RECIPIENT) || "carl@outerjoin.co.za"; // not live: always gated
+  ? null
+  : clean(process.env.EMAIL_TEST_RECIPIENT) || "carl@outerjoin.co.za";
 
 const BRAND = {
   navy: "#0a1a2f",
