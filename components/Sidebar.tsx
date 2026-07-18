@@ -159,6 +159,26 @@ export default function Sidebar() {
       </nav>
 
       <div className="sidebar-foot">
+        <button
+          onClick={async () => {
+            await fetch("/api/auth/logout", { method: "POST" });
+            window.location.href = "/login";
+          }}
+          style={{
+            width: "100%",
+            marginBottom: 12,
+            padding: "8px 12px",
+            borderRadius: 8,
+            border: "1px solid rgba(255,255,255,0.12)",
+            background: "transparent",
+            color: "#b8c4d4",
+            fontSize: 12.5,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          Sign out
+        </button>
         <strong>Valora Advisory</strong>
         <br />
         Turning Insight into Impact

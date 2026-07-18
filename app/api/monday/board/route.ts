@@ -10,6 +10,16 @@ export async function GET(req: NextRequest) {
   const secret = params.get("secret");
   const boardId = params.get("id");
 
+  // Temporary diagnostic (no value leak): confirm the secret env is wired.
+  if (secret === "__diag__") {
+    const env = process.env.MONDAY_WEBHOOK_SECRET;
+    return NextResponse.json({
+      hasSecret: Boolean(env),
+      secretLen: env ? env.length : 0,
+      hasToken: Boolean(process.env.MONDAY_API_TOKEN),
+    });
+  }
+
   if (!process.env.MONDAY_WEBHOOK_SECRET || secret !== process.env.MONDAY_WEBHOOK_SECRET) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
