@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addUser, findUser } from "@/lib/users-store";
+import { addUser, findUser, countUsers } from "@/lib/users-store";
 
 export const runtime = "nodejs";
 
-// One-time seed of the first admin. Secret-guarded (AUTH_BOOTSTRAP_SECRET).
+// Seed the first admin. Open only on true first-run (zero users); once any user
+// exists it requires AUTH_BOOTSTRAP_SECRET, so it auto-closes after the first admin.
 export async function POST(req: NextRequest) {
   try {
     const { secret, email, name, password } = await req.json();
-    if (!process.env.AUTH_BOOTSTRAP_SECRET || secret !== process.env.AUTH_BOOTSTRAP_SECRET) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const isFirstRun = (await countUsers()) === 0;
+    if (!isFirstRun) {
+      if (!process.env.AUTH_BOOTSTRAP_SECRET || secret !== process.env.AUTH_BOOTSTRAP_SECRET) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
     }
     if (await findUser(String(email || ""))) {
       return NextResponse.json({ error: "User already exists." }, { status: 409 });
