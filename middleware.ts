@@ -51,5 +51,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   // Run on everything except Next internals and static assets.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|valora-logo.png|valora-signature.png).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|valora-logo.png).*)"],
 };
